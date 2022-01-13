@@ -1,0 +1,16 @@
+{
+  "name": "major-project-2",
+  "version": "1.0.0",
+  "description": "My second Web Application (TODO)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "Niman Yadav",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.2"
+  }
+}
