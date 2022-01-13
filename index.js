@@ -3,7 +3,7 @@ const express = require('express');
 // Use express
 const app = express();
 app.set('view engine' , 'ejs');
-app.set('views' , '.views');
+app.set('views' , './views');
 //Use routes 
 app.use('/' , require('./routes/index.js'));
 // define port 
