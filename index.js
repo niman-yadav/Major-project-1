@@ -8,8 +8,13 @@ app.set('view engine' , 'ejs');
 app.set('views' , './views');
 
 const db = require('./config/mongoose');
-//Requiring the layouts library
+//Requiring the layouts library 
 const expressLayouts = require('express-ejs-layouts');
+
+const cookieParser = require('cookie-parser');
+
+app.use(cookieParser());
+app.use(express.urlencoded());
 
 //use assets
 app.use(express.static('./assets'));
@@ -21,7 +26,7 @@ app.use(expressLayouts);
 app.set('layout extractStyles',true);
 app.set('layout extractScripts',true);
 
-//Use routes 
+//Use routes  
 app.use('/' , require('./routes/index.js'));
 // define port 
 const port = 8000;
