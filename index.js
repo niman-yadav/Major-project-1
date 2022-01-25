@@ -2,6 +2,7 @@
 const express = require('express');
 // Use express
 const app = express();
+const cookieParser = require('cookie-parser');
 //set the view engine
 app.set('view engine' , 'ejs');
 // set the view directory structure
@@ -11,7 +12,7 @@ const db = require('./config/mongoose');
 //Requiring the layouts library 
 const expressLayouts = require('express-ejs-layouts');
 
-const cookieParser = require('cookie-parser');
+
 
 app.use(cookieParser());
 app.use(express.urlencoded());

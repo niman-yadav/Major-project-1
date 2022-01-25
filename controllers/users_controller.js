@@ -21,7 +21,7 @@ module.exports.signIn = function(req,res){
 //get sign up data
 module.exports.create = function(req , res){
     //to do later
-    console.log('hii');
+    
     if(req.body.password != req.body.confirm_password)
     {
         return res.redirect('back');
@@ -33,6 +33,7 @@ module.exports.create = function(req , res){
             console.log('error in finding sign up data');
             return;
         }
+        //console.log(user);
         if(!user)
         {
 
@@ -43,12 +44,13 @@ module.exports.create = function(req , res){
                     return;
                 }
                 console.log('Successful in creating user');
+                return res.redirect('/users/sign-in');
             })
-            return res.redirect('/users/sign-in');
+           
         }
         else
         {
-            console.log('User found or password mismatch');
+            console.log('User found');
             return res.redirect('back');
         }
        
