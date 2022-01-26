@@ -3,16 +3,37 @@ const express = require('express');
 // Use express
 const app = express();
 const cookieParser = require('cookie-parser');
+
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('./config/passport-local-strategy');
+const MongoStore = require('connect-mongo');
 //set the view engine
 app.set('view engine' , 'ejs');
 // set the view directory structure
 app.set('views' , './views');
 
+app.use(session({
+    name: 'codeial',
+    secret: 'blahsomething',
+    saveUninitialized: false,
+    resave: false,
+    cookie:{
+        maxAge: (1000*60*100),
+
+    },
+    store: MongoStore.create({
+        mongoUrl: 'mongodb://localhost/Codeial_Development_db',
+        autoRemove:'disabled', 
+    })
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(passport.setAuthenticatedUser); 
 const db = require('./config/mongoose');
 //Requiring the layouts library 
 const expressLayouts = require('express-ejs-layouts');
-
-
 
 app.use(cookieParser());
 app.use(express.urlencoded());
