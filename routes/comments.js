@@ -1,0 +1,10 @@
+const express= require('express');
+const app = express();
+const passport = require('passport');
+const commentController = require('../controllers/comments_controller');
+
+const router = express.Router();
+
+router.post('/create' ,passport.checkAuthentication, commentController.create );
+
+module.exports = router;
