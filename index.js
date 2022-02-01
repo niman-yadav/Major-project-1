@@ -8,6 +8,18 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('./config/passport-local-strategy');
 const MongoStore = require('connect-mongo');
+const sass = require('node-sass');
+//const sassMiddleware = require("node-sass-middleware");
+/*
+sass.renderSync({
+    file: './assets/scss',
+    outFile: './assets/css',
+    outputStyle : 'extended',
+    prefix : '/css',
+    sourceMap : true
+});
+*/
+
 //set the view engine
 app.set('view engine' , 'ejs');
 // set the view directory structure
