@@ -9,6 +9,8 @@ const passport = require('passport');
 const LocalStrategy = require('./config/passport-local-strategy');
 const MongoStore = require('connect-mongo');
 const sass = require('node-sass');
+const flash = require('connect-flash');
+const customMware = require('./config/customMware');
 //const sassMiddleware = require("node-sass-middleware");
 /*
 sass.renderSync({
@@ -41,8 +43,11 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(flash());
+app.use(customMware.setFlash);
 app.use(passport.setAuthenticatedUser); 
+
+
 const db = require('./config/mongoose');
 //Requiring the layouts library 
 const expressLayouts = require('express-ejs-layouts');

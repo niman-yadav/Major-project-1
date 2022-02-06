@@ -22,6 +22,8 @@ module.exports.signUp = function(req,res){
 }
 // render the sign in page
 module.exports.signIn = function(req,res){
+
+
     if(req.isAuthenticated())
     {
         return res.redirect('/users/profile');
@@ -75,12 +77,14 @@ module.exports.create = function(req , res){
 module.exports.createSession = function(req ,res)
 {
     //Todo later
+    req.flash('success' , 'Logged in successfully');
     return res.redirect('/');
 }
 
 module.exports.signOut = function(req, res){
 
     req.logout();
+    req.flash('success' , 'Logged out successfully');
     return res.redirect('/');
 }
 
