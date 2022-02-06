@@ -2,9 +2,13 @@ const { redirect } = require('express/lib/response');
 const User = require('../models/user.js');
 module.exports.users_profile = function(req , res)
 {
-    return res.render('user_profile.ejs',{
-        title:'Profile'
+    User.findById(req.params.id, function(err , user){
+        return res.render('user_profile.ejs',{
+            title:'Profile',
+            profile_user: user
+        });
     });
+    
 }
 //render the signup page
 module.exports.signUp = function(req,res){
@@ -78,4 +82,17 @@ module.exports.signOut = function(req, res){
 
     req.logout();
     return res.redirect('/');
+}
+
+module.exports.update = async function(req, res)
+{
+    try{
+        let user = await User.findByIdAndUpdate(req.params.id , req.body);
+        return res.redirect('back');
+
+    }
+    catch(err)
+    {
+        console.log(`Error : ${err}`);
+    }
 }
