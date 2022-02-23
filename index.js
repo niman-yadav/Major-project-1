@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('./config/passport-local-strategy');
+const passportJwt = require('./config/passport-jwt-strategy');
 const MongoStore = require('connect-mongo');
 const sass = require('node-sass');
 const flash = require('connect-flash');
@@ -57,6 +58,7 @@ app.use(express.urlencoded());
 
 //use assets
 app.use(express.static('./assets'));
+app.use('/uploads', express.static(__dirname+'/uploads'));
 // use the library
 app.use(expressLayouts);
 

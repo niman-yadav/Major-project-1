@@ -3,50 +3,86 @@ const Comment = require('../models/comment');
 const { redirect } = require('express/lib/response');
 
 
-module.exports.create = function (req , res) {
-    Post.findById(req.body.post , function(err, post){
-
-        if(post)
-        {
-            Comment.create({
-                content: req.body.content,
-                post: req.body.post,
-                user: req.user._id
-            },function(err, comment) {
-                if(err)
-                {
-                    console.log('Error in creating comment entry in database');
-                    return;
-                }
-                   
-                   
+module.exports.create = async function (req , res) {
+    try{
+        //console.log(req.body.post);
+            let post = await Post.findById(req.body.post );
+            //console.log(post);
+            
+            if(post)
+            {
+                
+                //console.log('hi i am here');
+                let comment = await Comment.create({
+                    content: req.body.content,
+                    post: req.body.post,
+                    user: req.user._id
+                });
+                    
                     post.comments.push(comment);
                     post.save();  
                     
+                req.flash('success', 'Comment Published!');
+                if(req.xhr)
+                {
+                    console.log('Wait');
+                    comment = await comment.populate('user', 'name');
+                    return res.status('200').json({
+                        data:{
+                            comment:comment
+                        },message:"comment created!"
+                    });
+
+                }
+
+                    
                     res.redirect('/');
-            });
-        
+            }
         }
-    })
+        catch(err){
+                
+            console.log(err);
+            req.flash('error', err);
+            return;
+
+        }
     
 };
 
-module.exports.destroy = function(req, res)
+module.exports.destroy = async function(req, res)
 {
-    Comment.findById(req.params.id , function(err , comment){
+    try{
+        let comment = await Comment.findById(req.params.id);
         if(comment.user == req.user.id)
         {
             let postId = comment.post;
             comment.remove();
 
-            Post.findByIdAndUpdate(postId , { $pull : {comments: req.params.id}}, function(err , post){
-                return res.redirect('back');
-            });
+            let post = await Post.findByIdAndUpdate(postId , { $pull : {comments: req.params.id}});
+
+
+            // send the comment id which was deleted back to the views
+            if (req.xhr){
+                return res.status(200).json({
+                    data: {
+                        comment_id: req.params.id
+                    },
+                    message: "Post deleted"
+                });
+            }
+
+            return res.redirect('back');
         }
         else 
         {
             return res.redirect('back');
         }
-    });
+    }
+    catch(err)
+    {
+        console.log(err.responseText);
+        return ;
+    }
+    
 }
 

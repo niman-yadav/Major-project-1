@@ -1,5 +1,8 @@
 const { redirect } = require('express/lib/response');
 const User = require('../models/user.js');
+const fs = require('fs');
+const path = require('path');
+
 module.exports.users_profile = function(req , res)
 {
     User.findById(req.params.id, function(err , user){
@@ -90,13 +93,42 @@ module.exports.signOut = function(req, res){
 
 module.exports.update = async function(req, res)
 {
-    try{
-        let user = await User.findByIdAndUpdate(req.params.id , req.body);
-        return res.redirect('back');
+    if(req.user.id == req.params.id){
+        try{
+        
+            let user = await User.findById(req.params.id);
+            User.uploadedAvatar(req, res , function(err){
+                if(err){
+                    console.log(`############# Multer error ###########`);
+                }
+                user.name = req.body.name;
+                user.email = req.body.email;
 
+                if(req.file){
+                    if(user.avatar){
+                        fs.unlinkSync(path.join(__dirname,'..',user.avatar))
+                    }
+                    user.avatar = User.avatarPath+ '/' +req.file.filename;
+
+                }
+
+                user.save();
+                // console.log('ji');
+                return res.redirect('back');
+            });
+            
+    
+        }
+        catch(err)
+        {
+            console.log(`Error : ${err}`);
+            req.flash('error', 'Not Updated Successfully');
+            return res.redirect('back');
+        }  
     }
-    catch(err)
-    {
-        console.log(`Error : ${err}`);
+    else{
+        req.flash('error', 'Not Updated Successfully');
+        return res.status('401').send('unauthorized');
     }
+    
 }

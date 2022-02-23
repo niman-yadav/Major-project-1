@@ -4,7 +4,7 @@
     <div class="links-to-auth">
         <% if(locals.user){%>
             <li type="none">
-                <a href="/users/profile">
+                <a href="/users/profile/<%=user._id%>">
                     <%= user.name %>
                 </a>
             </li>
@@ -20,8 +20,8 @@
                 </a>
             </li>
             <li type="none">
-                <a href="/users/sign-out">
-                    Sign Out
+                <a href="/users/sign-up">
+                    Sign Up
                 </a>
             </li>
         <%}%>

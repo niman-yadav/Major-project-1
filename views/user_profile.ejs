@@ -2,13 +2,15 @@
 <h1>
     Codeial/User Profile
 </h1>
+<img src="<%= user.avatar %>" width="100" alt="<%= user.name %>">
 <p><%=profile_user.name %></p>
 <p><%=profile_user.email %></p>
 
 <% if(profile_user.id == locals.user.id){%>
-    <form method="post" action="/users/update/<%=user.id%>">
+    <form method="post" action="/users/update/<%=user.id%>" enctype="multipart/form-data">
         <input id = "name" type="text" name= "name" placeholder="Your Name" value="<%=profile_user.name%>" required>
         <input id = "email" type = "email" name= "email" placeholder="Your Email" value="<%=profile_user.email%>" required>
+        <input id = "avatar" name = "avatar" type="file" placeholder="Your profile picture">
         <input type="submit" value="update">
 
     </form>
